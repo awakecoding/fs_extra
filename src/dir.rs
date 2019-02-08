@@ -17,6 +17,8 @@ pub struct CopyOptions {
     pub copy_inside: bool,
     /// Sets the option true, for copy only content without a created folder in the destination folder    
     pub content_only: bool,
+    /// Set the option to true to preserve file timestamps
+    pub preserve_time: bool,
     /// Sets levels reading. Set 0 for read all directory folder. By default 0.
     ///
     /// Warrning: Work only for copy operations!
@@ -42,6 +44,7 @@ impl CopyOptions {
             buffer_size: 64000, //64kb
             copy_inside: false,
             content_only: false,
+            preserve_time: false,
             depth: 0,
         }
     }
@@ -587,6 +590,7 @@ where
             overwrite: options.overwrite,
             skip_exist: options.skip_exist,
             buffer_size: options.buffer_size,
+            preserve_time: options.preserve_time,
         };
         let mut result_copy: Result<u64>;
         let mut work = true;
@@ -882,6 +886,7 @@ where
             overwrite: options.overwrite,
             skip_exist: options.skip_exist,
             buffer_size: options.buffer_size,
+            preserve_time: options.preserve_time,
         };
 
         if let Some(file_name) = file_name.to_str() {
@@ -1077,6 +1082,7 @@ where
             overwrite: options.overwrite,
             skip_exist: options.skip_exist,
             buffer_size: options.buffer_size,
+            preserve_time: options.preserve_time,
         };
 
         let mut result_copy: Result<u64>;
@@ -1219,6 +1225,7 @@ where
             overwrite: options.overwrite,
             skip_exist: options.skip_exist,
             buffer_size: options.buffer_size,
+            preserve_time: options.preserve_time,
         };
 
         if let Some(file_name) = file_name.to_str() {

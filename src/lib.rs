@@ -8,6 +8,8 @@ macro_rules! err {
     };
 }
 
+extern crate filetime;
+
 /// The error type for fs_extra operations with files and folder.
 pub mod error;
 /// This module include extra methods for works with files.

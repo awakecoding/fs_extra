@@ -4,6 +4,8 @@ use std::fs::{remove_file, File};
 use std::io::{Read, Write};
 use std::path::Path;
 
+use filetime::{FileTime, set_file_times};
+
 ///	Options and flags which can be used to configure how a file will be  copied  or moved.
 pub struct CopyOptions {
     /// Sets the option true for overwrite existing files.
@@ -12,6 +14,8 @@ pub struct CopyOptions {
     pub skip_exist: bool,
     /// Sets buffer size for copy/move work only with receipt information about process work.
     pub buffer_size: usize,
+    /// Set the option to true to preserve file timestamps
+    pub preserve_time: bool,
 }
 
 impl CopyOptions {
@@ -30,6 +34,7 @@ impl CopyOptions {
             overwrite: false,
             skip_exist: false,
             buffer_size: 64000, //64kb
+            preserve_time: false,
         }
     }
 }
@@ -99,7 +104,16 @@ where
         }
     }
 
-    Ok(std::fs::copy(from, to)?)
+    let result_copy = std::fs::copy(from, &to)?;
+
+    if options.preserve_time {
+        let metadata = std::fs::metadata(from)?;
+        let mtime = FileTime::from_last_modification_time(&metadata);
+        let atime = FileTime::from_last_access_time(&metadata);
+        set_file_times(&to, atime, mtime)?;
+    }
+
+    Ok(result_copy)
 }
 
 /// Copies the contents of one file to another with recept information about process.
