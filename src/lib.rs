@@ -207,6 +207,7 @@ where
                     let mut file_options = file::CopyOptions::new();
                     file_options.overwrite = options.overwrite;
                     file_options.skip_exist = options.skip_exist;
+                    file_options.preserve_time = options.preserve_time;
                     result += file::copy(item, to.as_ref().join(file_name), &file_options)?;
                 }
             } else {
@@ -352,6 +353,7 @@ where
             file_options.overwrite = options.overwrite;
             file_options.skip_exist = options.skip_exist;
             file_options.buffer_size = options.buffer_size;
+            file_options.preserve_time = options.preserve_time;
 
             if let Some(file_name) = item.file_name() {
                 if let Some(file_name) = file_name.to_str() {
@@ -538,6 +540,7 @@ where
             file_options.overwrite = options.overwrite;
             file_options.skip_exist = options.skip_exist;
             file_options.buffer_size = options.buffer_size;
+            file_options.preserve_time = options.preserve_time;
 
             if let Some(file_name) = item.file_name() {
                 if let Some(file_name) = file_name.to_str() {
@@ -662,6 +665,7 @@ where
             file_options.overwrite = options.overwrite;
             file_options.skip_exist = options.skip_exist;
             file_options.buffer_size = options.buffer_size;
+            file_options.preserve_time = options.preserve_time;
 
             if let Some(file_name) = item.file_name() {
                 if let Some(file_name) = file_name.to_str() {

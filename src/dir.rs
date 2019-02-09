@@ -4,6 +4,8 @@ use std::fs::{create_dir, create_dir_all, read_dir, remove_dir_all, Metadata};
 use std::path::{Path, PathBuf};
 use std::time::SystemTime;
 
+use filetime::{FileTime, set_file_times};
+
 ///	Options and flags which can be used to configure how a file will be  copied  or moved.
 #[derive(Clone)]
 pub struct CopyOptions {
@@ -574,10 +576,16 @@ where
         let dir = to.join(&tmp_to);
         if !dir.exists() {
             if options.copy_inside {
-                create_all(dir, false)?;
+                create_all(&dir, false)?;
             } else {
-                create(dir, false)?;
+                create(&dir, false)?;
             }
+        }
+        if options.preserve_time {
+            let metadata = std::fs::metadata(&directory)?;
+            let mtime = FileTime::from_last_modification_time(&metadata);
+            let atime = FileTime::from_last_access_time(&metadata);
+            set_file_times(&dir, atime, mtime)?;
         }
     }
     let mut result: u64 = 0;
@@ -852,10 +860,16 @@ where
         let dir = to.join(&tmp_to);
         if !dir.exists() {
             if options.copy_inside {
-                create_all(dir, false)?;
+                create_all(&dir, false)?;
             } else {
-                create(dir, false)?;
+                create(&dir, false)?;
             }
+        }
+        if options.preserve_time {
+            let metadata = std::fs::metadata(&directory)?;
+            let mtime = FileTime::from_last_modification_time(&metadata);
+            let atime = FileTime::from_last_access_time(&metadata);
+            set_file_times(&dir, atime, mtime)?;
         }
     }
 
@@ -1066,10 +1080,16 @@ where
         let dir = to.join(&tmp_to);
         if !dir.exists() {
             if options.copy_inside {
-                create_all(dir, false)?;
+                create_all(&dir, false)?;
             } else {
-                create(dir, false)?;
+                create(&dir, false)?;
             }
+        }
+        if options.preserve_time {
+            let metadata = std::fs::metadata(&directory)?;
+            let mtime = FileTime::from_last_modification_time(&metadata);
+            let atime = FileTime::from_last_access_time(&metadata);
+            set_file_times(&dir, atime, mtime)?;
         }
     }
     let mut result: u64 = 0;
@@ -1191,10 +1211,16 @@ where
         let dir = to.join(&tmp_to);
         if !dir.exists() {
             if options.copy_inside {
-                create_all(dir, false)?;
+                create_all(&dir, false)?;
             } else {
-                create(dir, false)?;
+                create(&dir, false)?;
             }
+        }
+        if options.preserve_time {
+            let metadata = std::fs::metadata(&directory)?;
+            let mtime = FileTime::from_last_modification_time(&metadata);
+            let atime = FileTime::from_last_access_time(&metadata);
+            set_file_times(&dir, atime, mtime)?;
         }
     }
 
